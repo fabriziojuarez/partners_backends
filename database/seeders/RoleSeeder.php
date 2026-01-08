@@ -26,16 +26,19 @@ class RoleSeeder extends Seeder
         Role::create([
             'name' => 'Barista Trainer',
             'prefix' => 'BT',
+            'description' => 'Administracion de partners FT y PT, Administracion de cursos y Evaluaciones',
         ]);
 
         Role::create([
             'name' => 'Asistente de tienda',
             'prefix' => 'SSV',
+            'description' => 'Administracion de partners y ascenderlos hasta BT'
         ]);
 
         Role::create([
             'name' => 'Gerente de tienda',
             'prefix' => 'SM',
+            'description' => 'Administracion de partners y ascenderlos hasta SSV',
         ]);
     }
 }

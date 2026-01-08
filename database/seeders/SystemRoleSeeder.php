@@ -21,7 +21,7 @@ class SystemRoleSeeder extends Seeder
 
         SystemRole::create([
             'name' => 'Administrador',
-            'description' => 'Contiene acceso a todas las funcionalidades del sistema',
+            'description' => 'Administracion completa de partners y cursos',
         ]);
     }
 }
