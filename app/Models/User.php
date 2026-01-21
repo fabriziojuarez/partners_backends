@@ -59,4 +59,10 @@ class User extends Authenticatable
     {
         return $this->hasOne(Partner::class);
     }
+
+    // Funcion para saber si es Administrador
+    public function isAdmin(): bool
+    {
+        return $this->systemRole->name === 'Administrador';
+    }
 }

@@ -6,12 +6,19 @@ use App\Http\Requests\StorePartnerRequest;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
+
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 use App\Models\User;
 use App\Models\Partner;
 use App\Models\Role;
 
+use function Symfony\Component\Translation\t;
+
 class PartnerController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index()
     {
         $partner = Auth::user()->partner;
@@ -50,5 +57,12 @@ class PartnerController extends Controller
 
     public function register_courses(){
         
+    }
+
+    public function destroy(int $id)
+    {
+        $partner = Partner::findOrFail($id);
+        $this->authorize('manage', $partner);
+        return $partner;
     }
 }
