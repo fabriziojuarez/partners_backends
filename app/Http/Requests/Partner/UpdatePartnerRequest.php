@@ -26,6 +26,7 @@ class UpdatePartnerRequest extends FormRequest
             'name' => 'sometimes|max:255',
             'code' => 'sometimes|integer|digits_between:5,7',
             'role_id' => 'sometimes|integer|exists:roles,id',
+            'is_active' => 'sometimes|boolean',
         ];
     }
 }
