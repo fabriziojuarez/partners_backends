@@ -19,23 +19,29 @@ class AuthController extends Controller
     {
         $user = User::where('name', $request->user)
             ->where('is_active', true)
+            ->with('partner.role')
             ->first();
 
-        if (!$user || !Hash::check($request->code, $user->password) || !$user->partner) {
-            return response()->json([
-                'message' => 'Credenciales inválidas'
-            ], 401);
+        if (
+            !$user || 
+            !$user->partner || 
+            !Hash::check($request->code, $user->password)
+        ) {
+            $data = [
+                'message' => 'Credenciales inválidas',
+            ];
+            return response()->json($data, 401);
         }   
 
         $user->tokens()->delete();
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        $user->load('partner.role');
-        return response()->json([
+        $data = [
             'message' => 'Login exitoso',
             'partner' => new PartnerResource($user->partner),
             'access_token' => $token,
-        ], 200);
+        ];
+        return response()->json($data, 200);
     }
 
     public function logout(Request $request)
@@ -43,10 +49,8 @@ class AuthController extends Controller
         $request->user()->tokens()->delete();
 
         $data = [
-            'code_status' => 200,
-            'message' => 'Logged out',
+            'message' => 'Sesion finalizada',
         ];
-
-        return response()->json($data, $data['code_status']);
+        return response()->json($data, 200);
     }   
 }
