@@ -12,10 +12,17 @@ class Role extends Model
 
     protected $fillable = [
         'name',
-        'herarchy',
+        'hierarchy',
         'prefix',
         'description',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'hierarchy' => 'integer',
+        ];
+    }
 
     // Un Rol puede tener a varios Partners
     public function partners()

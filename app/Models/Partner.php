@@ -17,7 +17,7 @@ class Partner extends Authenticatable
     ];
 
     protected $hidden = [
-        'id',
+        //'id',
         'user_id',
         'created_at',
         'updated_at',

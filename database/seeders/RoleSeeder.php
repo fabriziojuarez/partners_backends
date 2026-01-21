@@ -15,33 +15,35 @@ class RoleSeeder extends Seeder
     {
         Role::create([
             'name' => 'Barista Part Time',
-            'herarchy' => 1,
+            'hierarchy' => 1,
             'prefix' => 'PT',
+            'description' => 'Realizar las evaluaciones antes de finalizar el mes'
         ]);
 
         Role::create([
             'name' => 'Barista Full Time',
-            'herarchy' => 2,
+            'hierarchy' => 2,
             'prefix' => 'FT',
+            'description' => 'Realizar las evaluaciones antes de finalizar el mes'
         ]);
 
         Role::create([
             'name' => 'Barista Trainer',
-            'herarchy' => 3,
+            'hierarchy' => 3,
             'prefix' => 'BT',
-            'description' => 'Administracion de partners FT y PT, Administracion de cursos y Evaluaciones',
+            'description' => 'Administrar de partners FT y PT, cursos y evaluar'
         ]);
 
         Role::create([
             'name' => 'Asistente de tienda',
-            'herarchy' => 4,
+            'hierarchy' => 4,
             'prefix' => 'SSV',
             'description' => 'Administracion de partners y ascenderlos hasta BT'
         ]);
 
         Role::create([
             'name' => 'Gerente de tienda',
-            'herarchy' => 5,
+            'hierarchy' => 5,
             'prefix' => 'SM',
             'description' => 'Administracion de partners y ascenderlos hasta SSV',
         ]);

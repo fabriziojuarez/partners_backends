@@ -23,13 +23,16 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Daniel139',
             'password' => 10015,
-            'systemrole_id' => 1,
         ]);
 
         User::create([
-            'name' => 'AndreaB139',
+            'name' => 'Pat139',
             'password' => 10016,
-            'is_active' => 0,
+        ]);
+
+        User::create([
+            'name' => 'Shirley139',
+            'password' => 10019,
         ]);
     }
 }

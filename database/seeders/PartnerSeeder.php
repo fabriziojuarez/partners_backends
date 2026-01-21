@@ -16,16 +16,26 @@ class PartnerSeeder extends Seeder
     {
         Partner::create([
             'name' => 'Fabrizio Juarez',
-            //'code' => 10011,
             'role_id' => 1,
             'user_id' => 1,
         ]);
 
         Partner::create([
             'name' => 'Daniel Quevedo',
-            //'code' => 10012,
             'role_id' => 3,
             'user_id' => 2,
+        ]);
+
+        Partner::create([
+            'name' => 'Patrick Ruiz',
+            'role_id' => 2,
+            'user_id' => 3,
+        ]);
+
+        Partner::create([
+            'name' => 'Shirley',
+            'role_id' => 1,
+            'user_id' => 4,
         ]);
     }
 }
