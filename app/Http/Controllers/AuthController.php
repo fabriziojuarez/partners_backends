@@ -21,7 +21,7 @@ class AuthController extends Controller
             ->where('is_active', true)
             ->first();
 
-        if (!$user || !Hash::check($request->code, $user->password)) {
+        if (!$user || !Hash::check($request->code, $user->password) || !$user->partner) {
             return response()->json([
                 'message' => 'Credenciales inválidas'
             ], 401);

@@ -34,5 +34,15 @@ class UserSeeder extends Seeder
             'name' => 'Shirley139',
             'password' => 10019,
         ]);
+
+        User::create([
+            'name' => 'Josy139',
+            'password' => 11111,
+        ]);
+
+        User::create([
+            'name' => 'ric139',
+            'password' => 22222,
+        ]);
     }
 }

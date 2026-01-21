@@ -13,7 +13,10 @@ class PartnerPolicy
         if($user->isAdmin()){
             return true;
         }
- 
+        if($partner->user->isAdmin()){
+            return false;
+        }
+
         return $user->partner->role->hierarchy > $partner->role->hierarchy;
     }
 

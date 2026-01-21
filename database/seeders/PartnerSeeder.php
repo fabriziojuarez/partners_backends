@@ -37,5 +37,17 @@ class PartnerSeeder extends Seeder
             'role_id' => 1,
             'user_id' => 4,
         ]);
+
+        Partner::create([
+            'name' => 'Joselyn Pino',
+            'role_id' => 4,
+            'user_id' => 5,
+        ]);
+
+        Partner::create([
+            'name' => 'Ricardo Manyari',
+            'role_id' => 5,
+            'user_id' => 6,
+        ]);
     }
 }

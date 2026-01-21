@@ -22,28 +22,28 @@ class RoleSeeder extends Seeder
 
         Role::create([
             'name' => 'Barista Full Time',
-            'hierarchy' => 2,
+            'hierarchy' => 1,
             'prefix' => 'FT',
             'description' => 'Realizar las evaluaciones antes de finalizar el mes'
         ]);
 
         Role::create([
             'name' => 'Barista Trainer',
-            'hierarchy' => 3,
+            'hierarchy' => 2,
             'prefix' => 'BT',
             'description' => 'Administrar de partners FT y PT, cursos y evaluar'
         ]);
 
         Role::create([
             'name' => 'Asistente de tienda',
-            'hierarchy' => 4,
+            'hierarchy' => 3,
             'prefix' => 'SSV',
             'description' => 'Administracion de partners y ascenderlos hasta BT'
         ]);
 
         Role::create([
             'name' => 'Gerente de tienda',
-            'hierarchy' => 5,
+            'hierarchy' => 4,
             'prefix' => 'SM',
             'description' => 'Administracion de partners y ascenderlos hasta SSV',
         ]);

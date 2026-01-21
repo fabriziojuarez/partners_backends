@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePartnerRequest;
+use App\Http\Resources\PartnerResource;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -63,6 +64,7 @@ class PartnerController extends Controller
     {
         $partner = Partner::findOrFail($id);
         $this->authorize('manage', $partner);
-        return $partner;
+
+        return new PartnerResource($partner);
     }
 }
