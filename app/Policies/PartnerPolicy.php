@@ -4,19 +4,16 @@ namespace App\Policies;
 
 use App\Models\Partner;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class PartnerPolicy
 {
-    public function manage(User $user, Partner $partner): bool
+    private function canManage(User $user, Partner $partner): bool
     {
+        // Toda accion realizada por el administrador se cumplira
         if($user->isAdmin()){
             return true;
         }
-        if($partner->user->isAdmin()){
-            return false;
-        }
-
+        // Dependera si el usuario que realiza la accion tiene una mayor jerarquia
         return $user->partner->role->hierarchy > $partner->role->hierarchy;
     }
 
@@ -25,7 +22,7 @@ class PartnerPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->partner->role->isManager();
     }
 
     /**
@@ -33,15 +30,23 @@ class PartnerPolicy
      */
     public function view(User $user, Partner $partner): bool
     {
-        return true;
+        if ($user->partner->role->isManager() || $user->isAdmin()) {
+            return true;
+        }
+        return $user->partner->id === $partner->id;
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user, Partner $partner): bool
     {
-        return false;
+        // Todo usuario que no sea gestor de partners, dara error
+        if(!$user->partner->role->isManager()){
+            return false;
+        }
+        return $this->canManage($user, $partner);
+
     }
 
     /**
@@ -57,7 +62,11 @@ class PartnerPolicy
      */
     public function delete(User $user, Partner $partner): bool
     {
-        return false;
+        // Si se intenta eliminar a un usuario administrador, dara error
+        if($partner->user->isAdmin()){
+            return false;
+        }
+        return $this->canManage($user, $partner);
     }
 
     /**

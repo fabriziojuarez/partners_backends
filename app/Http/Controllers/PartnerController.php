@@ -14,23 +14,27 @@ use App\Models\User;
 use App\Models\Partner;
 use App\Models\Role;
 
-use function Symfony\Component\Translation\t;
-
 class PartnerController extends Controller
 {
     use AuthorizesRequests;
 
     public function index()
     {
-        $partner = Auth::user()->partner;
+        $this->authorize('viewAny', Partner::class);
 
-        $data = [
-            'status_code' => 200,
-            'partner' => $partner->Role,
-        ];
-        return response()->json($partner);
+        // Agregar arreglo de partners (modificar)
+        return "Listar partners";
     }
     
+    public function show(int $id){
+        $partner = Partner::findOrFail($id);
+
+        $this->authorize('view', $partner);
+
+        // Mostrar partner (modificar)
+        return $partner;
+    }
+
     public function store(StorePartnerRequest $request)
     {
         // SE CREA UN USER
@@ -63,8 +67,9 @@ class PartnerController extends Controller
     public function destroy(int $id)
     {
         $partner = Partner::findOrFail($id);
-        $this->authorize('manage', $partner);
+        $this->authorize('delete', $partner);
 
+        // Eliminar Partner (modificar)
         return new PartnerResource($partner);
     }
 }
