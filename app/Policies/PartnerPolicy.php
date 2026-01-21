@@ -63,8 +63,8 @@ class PartnerPolicy
             return false;
         }
 
-        // Si el partner seleccionado es administrador, dara error
-        if($partner->user->isAdmin()){
+        // Si el partner seleccionado es de mayor jerarquia o es administrador, dara error
+        if(!$this->canManage($user, $partner->role) || $partner->user->isAdmin()){
             return false;
         }
         // Si ninguno de los casos se cumple, el partner puede modificarlo con un rol inferior a el
