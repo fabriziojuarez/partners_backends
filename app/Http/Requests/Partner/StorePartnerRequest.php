@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Partner;
 
 use Illuminate\Foundation\Http\FormRequest;
+
+use Illuminate\Support\Facades\Auth;
 
 class StorePartnerRequest extends FormRequest
 {
@@ -11,8 +13,7 @@ class StorePartnerRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // MODIFICAR PARA QUE SOLO CIERTOS PARTNERS "BT" PUEDAN AGREGAR OTROS PARTNERS
-        return true;
+        return Auth::check();
     }
 
     /**
@@ -25,7 +26,7 @@ class StorePartnerRequest extends FormRequest
         return [
             'user' => 'required|string|max:255|unique:users,name',
             'name' => 'required|string|max:255',
-            'code' => 'required|integer|digits_between:5,7|unique:partners',
+            'code' => 'required|integer|digits_between:5,7',
             'role_id' => 'required|integer|exists:roles,id',
         ];
     }

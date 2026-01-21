@@ -3,18 +3,19 @@
 namespace App\Policies;
 
 use App\Models\Partner;
+use App\Models\Role;
 use App\Models\User;
 
 class PartnerPolicy
 {
-    private function canManage(User $user, Partner $partner): bool
+    private function canManage(User $user, Role $role): bool
     {
         // Toda accion realizada por el administrador se cumplira
         if($user->isAdmin()){
             return true;
         }
         // Dependera si el usuario que realiza la accion tiene una mayor jerarquia
-        return $user->partner->role->hierarchy > $partner->role->hierarchy;
+        return $user->partner->role->hierarchy > $role->hierarchy;
     }
 
     /**
@@ -39,14 +40,13 @@ class PartnerPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user, Partner $partner): bool
+    public function create(User $user, Role $role): bool
     {
-        // Todo usuario que no sea gestor de partners, dara error
-        if(!$user->partner->role->isManager()){
+        // Todo usuario que no sea gestor de partners ni administrador, dara error
+        if(!$user->partner->role->isManager() && !$user->isAdmin()){
             return false;
         }
-        return $this->canManage($user, $partner);
-
+        return $this->canManage($user, $role);
     }
 
     /**
@@ -66,7 +66,7 @@ class PartnerPolicy
         if($partner->user->isAdmin()){
             return false;
         }
-        return $this->canManage($user, $partner);
+        return $this->canManage($user, $partner->role);
     }
 
     /**

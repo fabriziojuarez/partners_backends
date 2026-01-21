@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePartnerRequest;
+use App\Http\Requests\Partner\StorePartnerRequest;
 use App\Http\Resources\PartnerResource;
 use Illuminate\Http\Request;
 
@@ -37,30 +37,14 @@ class PartnerController extends Controller
 
     public function store(StorePartnerRequest $request)
     {
-        // SE CREA UN USER
-        $user = new User();
-        $user->name = $request->user;
-        $user->save();
+        $role = Role::findOrFail($request->role_id);
+        $this->authorize('create', [Partner::class, $role]);
 
-        // SE CREA UN PARTNER PARA EL USER
-        $partner = new Partner();
-        $partner->name = $request->name;
-        $partner->code = $request->code; 
-        $partner->role_id = $request->role_id;
-        $partner->user_id = $user->id;
-        $partner->save();
-
-        $data = [
-            'code' => 201,
-            'message' => 'Partner created successfully',
-            'user' => $user,
-            'partner' => $partner,
-        ];
-
-        return response()->json($data, $data['code']);
+        // Agregar partner (modificar)
+        return $request;
     }
 
-    public function register_courses(){
+    public function update(){
         
     }
 
