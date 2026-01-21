@@ -29,12 +29,15 @@ class PartnerController extends Controller
     
     public function show(int $id)
     {
-        $partner = Partner::findOrFail($id);
+        $partner = Partner::with('role', 'user')->findOrFail($id);
 
         $this->authorize('view', $partner);
 
-        // Mostrar partner (modificar)
-        return $partner;
+        $data = [
+            'message' => 'Partner Seleccionado',
+            'partner' => new PartnerResource($partner),
+        ];
+        return response()->json($data, 200);
     }
 
     public function store(StorePartnerRequest $request)
@@ -48,9 +51,10 @@ class PartnerController extends Controller
 
     public function update(int $id, UpdatePartnerRequest $request)
     {
-        $partner = Partner::findOrFail($id);
+        $partner = Partner::with('role')->findOrFail($id);
         
         $role = Role::find($request->role_id) ?? $partner->role;
+
         $this->authorize('update', [$partner, $role]);
 
         // Actualizar partner (modificar)
@@ -63,6 +67,8 @@ class PartnerController extends Controller
         $this->authorize('delete', $partner);
 
         // Eliminar Partner (modificar)
-        return new PartnerResource($partner);
+        // Se podra emplear transacciones?
+        // DB::beginTransaction();
+
     }
 }

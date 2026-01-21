@@ -17,6 +17,13 @@ class Role extends Model
         'description',
     ];
 
+    protected $hidden = [
+        'id',
+        'hierarchy',
+        'created_at',
+        'updated_at',
+    ];
+
     protected function casts(): array
     {
         return [
