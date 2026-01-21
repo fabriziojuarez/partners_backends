@@ -23,6 +23,9 @@ class PartnerPolicy
      */
     public function viewAny(User $user): bool
     {
+        if($user->isAdmin()){
+            return true;
+        }
         return $user->partner->role->isManager();
     }
 
@@ -52,9 +55,20 @@ class PartnerPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Partner $partner): bool
+    // User: Quien realiza la accion | Partner: Usuario seleccionado | Role: a definir
+    public function update(User $user, Partner $partner, Role $role): bool
     {
-        return false;
+        // Todo usuario que no sea gestor de partners ni administrador, dara error
+        if(!$user->partner->role->isManager() && !$user->isAdmin()){
+            return false;
+        }
+
+        // Si el partner seleccionado es administrador, dara error
+        if($partner->user->isAdmin()){
+            return false;
+        }
+        // Si ninguno de los casos se cumple, el partner puede modificarlo con un rol inferior a el
+        return $this->canManage($user, $role);
     }
 
     /**

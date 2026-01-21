@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Partner\StorePartnerRequest;
+use App\Http\Requests\Partner\UpdatePartnerRequest;
 use App\Http\Resources\PartnerResource;
 use Illuminate\Http\Request;
 
@@ -26,7 +27,8 @@ class PartnerController extends Controller
         return "Listar partners";
     }
     
-    public function show(int $id){
+    public function show(int $id)
+    {
         $partner = Partner::findOrFail($id);
 
         $this->authorize('view', $partner);
@@ -44,8 +46,15 @@ class PartnerController extends Controller
         return $request;
     }
 
-    public function update(){
+    public function update(int $id, UpdatePartnerRequest $request)
+    {
+        $partner = Partner::findOrFail($id);
         
+        $role = Role::find($request->role_id) ?? $partner->role;
+        $this->authorize('update', [$partner, $role]);
+
+        // Actualizar partner (modificar)
+        return response()->json($request);
     }
 
     public function destroy(int $id)

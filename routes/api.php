@@ -19,7 +19,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/partners', [PartnerController::class, 'index']);
     Route::get('/partners/{id}', [PartnerController::class, 'show']);
     Route::post('/partners', [PartnerController::class, 'store']);
-    Route::put('/partners/{id}', [PartnerController::class, 'update']);
+    Route::patch('/partners/{id}', [PartnerController::class, 'update']);
     Route::delete('/partners/{id}', [PartnerController::class, 'destroy']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
