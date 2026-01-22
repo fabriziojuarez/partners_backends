@@ -14,6 +14,7 @@ class Partner extends Authenticatable
     protected $fillable = [
         'name',
         'role_id',
+        'user_id',
     ];
 
     protected $hidden = [
