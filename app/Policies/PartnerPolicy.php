@@ -14,6 +14,10 @@ class PartnerPolicy
         if($user->isAdmin()){
             return true;
         }
+        // Toda accion de un usuario inactivo dara error
+        if(!$user->is_active){
+            return false;
+        }
         // Dependera si el usuario que realiza la accion tiene una mayor jerarquia
         return $user->partner->role->hierarchy > $role->hierarchy;
     }
@@ -26,6 +30,9 @@ class PartnerPolicy
         if($user->isAdmin()){
             return true;
         }
+        if(!$user->is_active){
+            return false;
+        }
         return $user->partner->role->isManager();
     }
 
@@ -36,6 +43,9 @@ class PartnerPolicy
     {
         if ($user->partner->role->isManager() || $user->isAdmin()) {
             return true;
+        }
+        if(!$user->is_active){
+            return false;
         }
         return $user->partner->id === $partner->id;
     }
