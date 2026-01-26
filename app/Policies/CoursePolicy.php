@@ -49,8 +49,10 @@ class CoursePolicy
      */
     public function update(User $user, Partner $partner): bool
     {
-        if(!$partner->role->isManager() || 
-            $user->partner->role->hierarchy <= $partner->role->hierarchy
+        if(
+            !$partner->role->isManager() || 
+            $user->partner->role->hierarchy <= $partner->role->hierarchy &&
+            !$user->isAdmin()
         ){
             return false;
         }
@@ -62,7 +64,10 @@ class CoursePolicy
      */
     public function delete(User $user, Course $course): bool
     {
-        if($user->partner->id !== $course->manager_id){
+        if(
+            $user->partner->id !== $course->manager_id && 
+            !$user->isAdmin()
+        ){
             return false;
         }
         return $this->canManage($user);

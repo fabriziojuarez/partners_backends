@@ -25,9 +25,9 @@ class CourseController extends Controller
         $this->authorize('viewAny', Course::class);
 
         // Posiblemente agregarle el sp para ver el progreso del curso
-        $courses = Course::with(['topics'])->paginate(5);
+        $courses = Course::paginate(5);
 
-        $courses->load(['manager']);
+        $courses->load(['manager', 'topics']);
 
         $data = [
             'message' => 'Lista de Cursos',
@@ -38,11 +38,11 @@ class CourseController extends Controller
     
     public function show($id)
     {
-        $course = Course::with(['topics'])->findOrFail($id);
+        $course = Course::findOrFail($id);
 
         $this->authorize('view', $course);
 
-        $course->load(['manager']);
+        $course->load(['manager', 'topics']);
 
         $data = [
             'message' => 'Detalle del Curso',
@@ -75,7 +75,7 @@ class CourseController extends Controller
 
     public function update(UpdateCourseRequest $request, $id)
     {
-        $course = Course::with(['manager'])->findOrFail($id);
+        $course = Course::findOrFail($id);
         $partner = Partner::findOrFail($request->manager_id);
         $this->authorize('update', [Course::class, $partner]);
 
@@ -94,6 +94,7 @@ class CourseController extends Controller
             }
         });
 
+        $course->refresh();
         $course->load(['manager']);
 
         $data = [
