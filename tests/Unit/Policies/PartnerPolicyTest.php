@@ -10,36 +10,18 @@ use App\Models\Role;
 use App\Models\SystemRole;
 
 use App\Policies\PartnerPolicy;
+use Tests\Support\CreatePartners;
 
 class PartnerPolicyTest extends TestCase
 {
-
-    private function makePartnerWhithRoles(int $role_hierarchy, string $role_prefix, string $system_role_name): Partner
-    {
-        $role = new Role([
-            'hierarchy' => $role_hierarchy,
-            'prefix' => $role_prefix,
-        ]);
-
-        $partner = new Partner();
-        $partner->setRelation('role', $role);
-
-        $systemRole = new SystemRole(['name' => $system_role_name]);
-
-        $user = new User();
-        $user->setRelation('systemRole', $systemRole);
-        $partner->setRelation('user', $user);
-        $user->setRelation('partner', $partner);
-        
-        return $partner;
-    }
+    use CreatePartners;
 
     public function test_bt_user_cannot_delete_pt_admin()
     {
-        $BT_Partner = $this->makePartnerWhithRoles(2, 'BT', 'Usuario Comun');
+        $BT_Partner = $this->makePartner('BT', 'Usuario Comun');
         $BT_User = $BT_Partner->user;
 
-        $PT_Partner = $this->makePartnerWhithRoles(1, 'PT', 'Administrador');
+        $PT_Partner = $this->makePartner('PT', 'Administrador');
 
         $policy = new PartnerPolicy();
         $this->assertFalse($policy->delete($BT_User, $PT_Partner));
@@ -47,10 +29,10 @@ class PartnerPolicyTest extends TestCase
 
     public function test_bt_user_cannot_update_bt_user()
     {
-        $BT_Partner_1 = $this->makePartnerWhithRoles(2, 'BT', 'Usuario Comun');
+        $BT_Partner_1 = $this->makePartner('BT', 'Usuario Comun');
         $BT_User_1 = $BT_Partner_1->user;
         
-        $BT_Partner_2 = $this->makePartnerWhithRoles(2, 'BT', 'Usuario Comun');
+        $BT_Partner_2 = $this->makePartner('BT', 'Usuario Comun');
         
         $newRole = new Role(['hierarchy' => 2]);
 
@@ -60,7 +42,7 @@ class PartnerPolicyTest extends TestCase
 
     public function test_bt_user_innactive_cannot_see_partners()
     {
-        $BT_Partner = $this->makePartnerWhithRoles(3, 'BT', 'Usuario Comun');
+        $BT_Partner = $this->makePartner('BT', 'Usuario Comun');
         $BT_User = $BT_Partner->user;
         $BT_User->is_active = false;
 
