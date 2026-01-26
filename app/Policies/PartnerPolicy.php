@@ -10,13 +10,13 @@ class PartnerPolicy
 {
     private function canManage(User $user, Role $role): bool
     {
+        // Toda accion de un usuario o administrador inactivo dara error
+        if(!$user->is_active){
+            return false;
+        }
         // Toda accion realizada por el administrador se cumplira
         if($user->isAdmin()){
             return true;
-        }
-        // Toda accion de un usuario inactivo dara error
-        if(!$user->is_active){
-            return false;
         }
         // Dependera si el usuario que realiza la accion tiene una mayor jerarquia
         return $user->partner->role->hierarchy > $role->hierarchy;
@@ -27,11 +27,11 @@ class PartnerPolicy
      */
     public function viewAny(User $user): bool
     {
-        if($user->isAdmin()){
-            return true;
-        }
         if(!$user->is_active){
             return false;
+        }
+        if($user->isAdmin()){
+            return true;
         }
         return $user->partner->role->isManager();
     }
@@ -41,11 +41,11 @@ class PartnerPolicy
      */
     public function view(User $user, Partner $partner): bool
     {
-        if ($user->partner->role->isManager() || $user->isAdmin()) {
-            return true;
-        }
         if(!$user->is_active){
             return false;
+        }
+        if ($user->partner->role->isManager() || $user->isAdmin()) {
+            return true;
         }
         return $user->partner->id === $partner->id;
     }
