@@ -42,4 +42,10 @@ class Partner extends Authenticatable
     {
         return $this->hasMany(Enrollment::class);
     }
+
+    // Un Partner puede gestionar varios cursos
+    public function managedCourses()
+    {
+        return $this->hasMany(Course::class, 'manager_id');
+    }
 }
