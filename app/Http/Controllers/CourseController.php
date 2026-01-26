@@ -53,13 +53,14 @@ class CourseController extends Controller
 
     public function store(StoreCourseRequest $request)
     {
-        $this->authorize('create', Course::class);
+        $partner = Partner::findOrFail($request->manager_id);
+        $this->authorize('create', [Course::class, $partner]);
 
         $course = DB::transaction(function () use ($request){
             return Course::create([
                 'title' => $request->title,
                 'description' => $request->description,
-                'manager_id' => Auth::user()->partner->id,
+                'manager_id' => $request->manager_id,
             ]);
         });
 
@@ -75,8 +76,8 @@ class CourseController extends Controller
 
     public function update(UpdateCourseRequest $request, $id)
     {
-        $course = Course::findOrFail($id);
-        $partner = Partner::findOrFail($request->manager_id);
+        $course = Course::with(['manager'])->findOrFail($id);
+        $partner = Partner::find($request->manager_id) ?? $course->manager;
         $this->authorize('update', [Course::class, $partner]);
 
         DB::transaction(function () use ($request, $course){
@@ -95,7 +96,6 @@ class CourseController extends Controller
         });
 
         $course->refresh();
-        $course->load(['manager']);
 
         $data = [
             'message' => 'Curso Actualizado',

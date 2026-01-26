@@ -24,6 +24,7 @@ class StoreCourseRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'description' => 'required|string',
+            'manager_id' => 'required|exists:partners,id',
         ];
     }
 }

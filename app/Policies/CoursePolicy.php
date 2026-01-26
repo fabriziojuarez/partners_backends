@@ -14,13 +14,7 @@ class CoursePolicy
      */
     private function canManage(User $user): bool
     {
-        if(!$user->is_active){
-            return false;
-        }
-        if($user->isAdmin()){
-            return true;
-        }
-        return $user->partner->role->isManager();
+        return $user->partner->role->isManager() || $user->isAdmin();
     }
 
     public function viewAny(User $user): bool
@@ -31,7 +25,7 @@ class CoursePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Course $course): bool
+    public function view(User $user): bool
     {
         return $this->canManage($user);
     }
@@ -39,8 +33,14 @@ class CoursePolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user, Partner $partner): bool
     {
+        if(
+            !$partner->role->isManager() || 
+            $partner->role->hierarchy > $user->partner->role->hierarchy
+        ){
+            return false;
+        }
         return $this->canManage($user);
     }
 
@@ -51,8 +51,7 @@ class CoursePolicy
     {
         if(
             !$partner->role->isManager() || 
-            $user->partner->role->hierarchy <= $partner->role->hierarchy &&
-            !$user->isAdmin()
+            $partner->role->hierarchy >= $user->partner->role->hierarchy
         ){
             return false;
         }
@@ -64,13 +63,10 @@ class CoursePolicy
      */
     public function delete(User $user, Course $course): bool
     {
-        if(
-            $user->partner->id !== $course->manager_id && 
-            !$user->isAdmin()
-        ){
-            return false;
+        if($course->manager->id === $user->partner->id){
+            return true;
         }
-        return $this->canManage($user);
+        return false;
     }
 
     /**
