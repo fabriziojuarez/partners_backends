@@ -41,7 +41,7 @@ class PartnerController extends Controller
         $this->authorize('view', $partner);
 
         $data = [
-            'message' => 'Partner Seleccionado',
+            'message' => 'Detalle del Partner',
             'partner' => new PartnerResource($partner),
         ];
         return response()->json($data, 200);
