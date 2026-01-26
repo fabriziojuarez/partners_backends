@@ -80,7 +80,6 @@ class PartnerController extends Controller
         $role = Role::find($request->role_id) ?? $partner->role;
         $this->authorize('update', [$partner, $role]);
 
-        // Actualizar partner (modificar)
         DB::transaction(function() use ($request, $partner){
             if($request->filled('user')){
                 $partner->user->update(['name' => $request->user,]);

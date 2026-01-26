@@ -13,13 +13,6 @@ use App\Policies\PartnerPolicy;
 
 class PartnerPolicyTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     */
-    // public function test_example(): void
-    // {
-    //     $this->assertTrue(true);
-    // }
 
     private function makePartnerWhithRoles(int $role_hierarchy, string $role_prefix, string $system_role_name): Partner
     {
