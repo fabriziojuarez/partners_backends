@@ -4,11 +4,11 @@ namespace Tests\Unit\Policies;
 
 use PHPUnit\Framework\TestCase;
 
-use App\Model\App\Models\SystemRole;
 use App\Models\User;
 use App\Models\Partner;
 use App\Models\Role;
-use App\Models\SystemRole as ModelsSystemRole;
+use App\Models\SystemRole;
+
 use App\Policies\PartnerPolicy;
 
 class PartnerPolicyTest extends TestCase
@@ -24,7 +24,7 @@ class PartnerPolicyTest extends TestCase
         $partner = new Partner();
         $partner->setRelation('role', $role);
 
-        $systemRole = new ModelsSystemRole(['name' => $system_role_name]);
+        $systemRole = new SystemRole(['name' => $system_role_name]);
 
         $user = new User();
         $user->setRelation('systemRole', $systemRole);
