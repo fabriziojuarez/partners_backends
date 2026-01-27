@@ -26,6 +26,7 @@ class Topic extends Model
     {
         return [
             'note_max' => 'float',
+            'course_id' => 'integer',
             'is_active' => 'boolean',
         ];
     }
