@@ -25,6 +25,7 @@ class PartnerController extends Controller
     {
         $this->authorize('viewAny', Partner::class);
 
+        // Extraer con algun sp tambien sus progresos y cursos matriculados
         $partners = Partner::with(['role', 'user'])->paginate(5);
 
         $data = [
@@ -36,6 +37,7 @@ class PartnerController extends Controller
     
     public function show(int $id)
     {
+        // Extraer con algun sp el progreso de este partner y sus cursos matriculados
         $partner = Partner::with(['role', 'user'])->findOrFail($id);
 
         $this->authorize('view', $partner);
