@@ -33,7 +33,7 @@ class TopicPolicy
      */
     public function create(User $user, Course $course): bool
     {
-        return $this->canManage($user) && $course->manager_id === $user->partner->id;
+        return $this->canManage($user) && $course->manager === $user->partner;
     }
 
     /**
@@ -41,7 +41,8 @@ class TopicPolicy
      */
     public function update(User $user, Topic $topic, Course $course): bool
     {
-        return $this->canManage($user) && $course->manager_id === $user->partner->id;
+        if($topic->course !== $course) return false;
+        return $this->canManage($user) && $course->manager === $user->partner;
     }
 
     /**
@@ -50,7 +51,7 @@ class TopicPolicy
     public function delete(User $user, Topic $topic): bool
     {
         return $user->isAdmin() || 
-        ($user->partner->role->isManager() && $topic->course->manager_id === $user->partner->id);
+        ($user->partner->role->isManager() && $topic->course->manager === $user->partner);
     }
 
     /**
