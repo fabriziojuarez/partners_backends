@@ -21,9 +21,21 @@ class PartnerController extends Controller
 {
     use AuthorizesRequests;
 
+    public function profile()
+    {
+        $id = Auth::user()->partner->id;
+        $partner = Partner::with(['role', 'user'])->findOrFail($id);
+
+        $data = [
+            'message' => 'Bienvenido',
+            'mydata' => new PartnerResource($partner),
+        ];
+        return response()->json($data, 200);
+    }
+
     public function index()
     {
-        $this->authorize('viewAny', Partner::class);
+        $this->authorize('view', Partner::class);
 
         // Extraer con algun sp tambien sus progresos y cursos matriculados
         $partners = Partner::with(['role', 'user'])->paginate(5);
@@ -40,7 +52,7 @@ class PartnerController extends Controller
         // Extraer con algun sp el progreso de este partner y sus cursos matriculados
         $partner = Partner::with(['role', 'user'])->findOrFail($id);
 
-        $this->authorize('view', $partner);
+        $this->authorize('viewAny', $partner);
 
         $data = [
             'message' => 'Detalle del Partner',

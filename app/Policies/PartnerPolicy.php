@@ -30,24 +30,18 @@ class PartnerPolicy
         if(!$user->is_active){
             return false;
         }
-        if($user->isAdmin()){
-            return true;
-        }
-        return $user->partner->role->isManager();
+        return $user->partner->role->isManager() || $user->isAdmin();
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Partner $partner): bool
+    public function view(User $user): bool
     {
         if(!$user->is_active){
             return false;
         }
-        if ($user->partner->role->isManager() || $user->isAdmin()) {
-            return true;
-        }
-        return $user->partner->id === $partner->id;
+        return $user->partner->role->isManager() || $user->isAdmin();
     }
 
     /**

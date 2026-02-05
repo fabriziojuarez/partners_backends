@@ -9,8 +9,7 @@ use App\Models\User;
 
 trait CreatePartners
 {
-    protected function makePartner(string $rolePrefix, string $systemRoleName): Partner
-    {
+    protected function makeRole(string $rolePrefix){
         switch($rolePrefix){
             case 'SM':
                 $hierarchy = 4;
@@ -30,13 +29,21 @@ trait CreatePartners
             'hierarchy' => $hierarchy,
             'prefix' => $rolePrefix,
         ]);
+        return $role;
+    }
+
+    protected function makePartner(string $rolePrefix, string $systemRoleName, bool $is_active): Partner
+    {
+        $role = $this->makeRole($rolePrefix);
 
         $partner = new Partner();
         $partner->setRelation('role', $role);
 
         $systemRole = new SystemRole(['name' => $systemRoleName]);
 
-        $user = new User();
+        $user = new User([
+            'is_active' => $is_active,
+        ]);
         $user->setRelation('systemRole', $systemRole);
         $partner->setRelation('user', $user);
         $user->setRelation('partner', $partner);

@@ -33,25 +33,23 @@ class CoursePolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user, Partner $partner): bool
+    public function create(User $user): bool
     {
-        if(
-            !$partner->role->isManager() || 
-            $partner->role->hierarchy > $user->partner->role->hierarchy
-        ){
-            return false;
-        }
         return $this->canManage($user);
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Partner $partner): bool
+    public function update(User $user, Course $course, Partner $partner): bool
     {
+        if(!$partner->role->isManager()){
+            return false;
+        }
         if(
-            !$partner->role->isManager() || 
-            $partner->role->hierarchy >= $user->partner->role->hierarchy
+            ($course->manager->role->hierarchy > $user->partner->role->hierarchy &&
+            $course->manager !== $user->partner) || ($user->partner !== $partner &&
+            $user->partner->role->hierarchy <= $partner->role->hierarchy)
         ){
             return false;
         }
@@ -63,7 +61,7 @@ class CoursePolicy
      */
     public function delete(User $user, Course $course): bool
     {
-        if($course->manager->id === $user->partner->id){
+        if($course->manager === $user->partner){
             return true;
         }
         return false;
