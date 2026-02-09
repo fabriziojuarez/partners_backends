@@ -49,7 +49,7 @@ class TopicController extends Controller
 
         $topic = DB::transaction(function () use ($request) {
             return Topic::create([
-                'title' => $request->title,
+                'name' => $request->name,
                 'description' => $request->description,
                 'course_id' => $request->course_id,
                 'note_max' => $request->note_max,

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('topic_id')
                 ->constrained()
                 ->onDelete('cascade');
-            $table->double('note');
+            $table->double('note')->default(0.0);
             $table->timestamps();
         });
     }

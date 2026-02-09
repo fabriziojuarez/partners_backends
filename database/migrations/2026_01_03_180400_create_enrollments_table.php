@@ -24,6 +24,10 @@ return new class extends Migration
             $table->unsignedTinyInteger('period_month');
             $table->unsignedSmallInteger('period_year');
             $table->timestamps();
+
+            $table->unique(
+                ['course_id', 'partner_id', 'period_month', 'period_year'], 
+                'unique_course_partner_period');
         });
     }
 

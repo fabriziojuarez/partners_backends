@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Topic;
+namespace App\Http\Requests\Enrollment;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreTopicRequest extends FormRequest
+class StoreEnrollmentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,10 +22,10 @@ class StoreTopicRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'partner_id' => 'required|integer|exists:partners,id',
             'course_id' => 'required|integer|exists:courses,id',
-            'note_max' => 'required|numeric|min:0',
+            'period_month' => 'required|integer',
+            'period_year' => 'required|integer',
         ];
     }
 }
