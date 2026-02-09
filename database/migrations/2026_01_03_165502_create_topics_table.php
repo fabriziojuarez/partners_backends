@@ -20,6 +20,8 @@ return new class extends Migration
                 ->constrained('courses')
                 ->onDelete('cascade');
             $table->timestamps();
+
+            $table->unique(['name', 'course_id'], 'unique_name_course_id');
         });
     }
 

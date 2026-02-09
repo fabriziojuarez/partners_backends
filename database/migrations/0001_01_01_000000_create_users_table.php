@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('password')->unique();
+            $table->string('password');
             $table->foreignId('systemrole_id')->default(1)
                 ->constrained('systemroles')
                 ->onDelete('cascade');
