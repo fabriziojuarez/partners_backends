@@ -22,7 +22,7 @@ class CourseController extends Controller
 
     public function index()
     {
-        $this->authorize('viewAny', Course::class);
+        $this->authorize('view', Course::class);
 
         // Posiblemente agregarle el sp para ver el progreso de cada curso
         $courses = Course::paginate(5);
@@ -41,7 +41,7 @@ class CourseController extends Controller
         // Extraer con algun sp su progreso y partners matriculados
         $course = Course::findOrFail($id);
 
-        $this->authorize('view', $course);
+        $this->authorize('viewAny', $course);
 
         $course->load(['manager', 'topics']);
 

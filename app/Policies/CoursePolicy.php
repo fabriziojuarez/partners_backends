@@ -9,16 +9,18 @@ use Illuminate\Auth\Access\Response;
 
 class CoursePolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
     private function canManage(User $user): bool
     {
         return $user->partner->role->isManager() || $user->isAdmin();
     }
 
+    /**
+     * Determine whether the user can view any models.
+     */
     public function viewAny(User $user): bool
     {
+        if(!$user->is_active)return false;
+        // Si es FT o PT solo lo pueden ver los cursos en que uno esta escrito
         return $this->canManage($user);
     }
 
@@ -27,6 +29,7 @@ class CoursePolicy
      */
     public function view(User $user): bool
     {
+        if(!$user->is_active)return false;
         return $this->canManage($user);
     }
 
@@ -43,13 +46,14 @@ class CoursePolicy
      */
     public function update(User $user, Course $course, Partner $partner): bool
     {
-        if(!$partner->role->isManager()){
+        if(!$user->is_active || !$partner->user->is_active || !$partner->role->isManager()){
             return false;
         }
         if(
-            ($course->manager->role->hierarchy > $user->partner->role->hierarchy &&
+            (($course->manager->role->hierarchy > $user->partner->role->hierarchy &&
             $course->manager !== $user->partner) || ($user->partner !== $partner &&
-            $user->partner->role->hierarchy <= $partner->role->hierarchy)
+            $user->partner->role->hierarchy <= $partner->role->hierarchy)) && 
+            !$user->isAdmin()
         ){
             return false;
         }
