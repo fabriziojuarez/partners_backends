@@ -30,7 +30,7 @@ class PartnerPolicy
         if(!$user->is_active){
             return false;
         }
-        return $user->partner->partner_role->isManager() || $user->isAdmin();
+        return $user->partner->isManager() || $user->isAdmin();
     }
 
     /**
@@ -41,7 +41,7 @@ class PartnerPolicy
         if(!$user->is_active){
             return false;
         }
-        return $user->partner->partner_role->isManager() || $user->isAdmin();
+        return $user->partner->isManager() || $user->isAdmin();
     }
 
     /**
@@ -50,7 +50,7 @@ class PartnerPolicy
     public function create(User $user, PartnerRole $role): bool
     {
         // Todo usuario que no sea gestor de partners ni administrador, dara error
-        if(!$user->partner->partner_role->isManager() && !$user->isAdmin()){
+        if(!$user->partner->isManager() && !$user->isAdmin()){
             return false;
         }
         return $this->canManage($user, $role);
@@ -63,7 +63,7 @@ class PartnerPolicy
     public function update(User $user, Partner $partner, PartnerRole $role): bool
     {
         // Todo usuario que no sea gestor de partners ni administrador, dara error
-        if(!$user->partner->partner_role->isManager() && !$user->isAdmin()){
+        if(!$user->partner->isManager() && !$user->isAdmin()){
             return false;
         }
 

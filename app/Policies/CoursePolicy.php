@@ -11,7 +11,7 @@ class CoursePolicy
 {
     private function canManage(User $user): bool
     {
-        return $user->partner->partner_role->isManager() || $user->isAdmin();
+        return $user->partner->isManager() || $user->isAdmin();
     }
 
     /**
@@ -46,7 +46,7 @@ class CoursePolicy
      */
     public function update(User $user, Course $course, Partner $partner): bool
     {
-        if(!$user->is_active || !$partner->user->is_active || !$partner->partner_role->isManager()){
+        if(!$user->is_active || !$partner->user->is_active || !$partner->isManager()){
             return false;
         }
         if(

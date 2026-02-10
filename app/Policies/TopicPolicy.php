@@ -9,7 +9,7 @@ use App\Models\CourseTopic;
 class TopicPolicy
 {
     private function canManage(User $user){
-        return $user->isAdmin() || $user->partner->partner_role->isManager();
+        return $user->isAdmin() || $user->partner->isManager();
     }
     /**
      * Determine whether the user can view any models.
@@ -50,7 +50,7 @@ class TopicPolicy
     public function delete(User $user, CourseTopic $topic): bool
     {
         return $user->isAdmin() || 
-        ($user->partner->partner_role->isManager() && $topic->course->manager === $user->partner);
+        ($user->partner->isManager() && $topic->course->manager === $user->partner);
     }
 
     /**

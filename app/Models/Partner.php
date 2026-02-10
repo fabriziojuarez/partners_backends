@@ -48,4 +48,10 @@ class Partner extends Authenticatable
     {
         return $this->hasMany(Course::class, 'manager_id');
     }
+
+    // Funcion para saber si puede visualizar partners
+    public function isManager(): bool
+    {
+        return in_array($this->partner_role->prefix, ['BT', 'SSV', 'SM']);
+    }
 }

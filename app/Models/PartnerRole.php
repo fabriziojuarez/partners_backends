@@ -36,10 +36,4 @@ class PartnerRole extends Model
     {
         return $this->hasMany(Partner::class);
     }
-
-    // Funcion para saber si puede visualizar partners
-    public function isManager(): bool
-    {
-        return in_array($this->prefix, ['BT', 'SSV', 'SM']);
-    }
 }
