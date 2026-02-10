@@ -22,10 +22,11 @@ class UpdateTopicRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'sometimes|string|max:255',
+            'name' => 'sometimes|string|max:255',
             'description' => 'sometimes|string',
             'course_id' => 'sometimes|integer|exists:courses,id',
             'note_max' => 'sometimes|numeric|min:0',
+            'is_active' => ''
         ];
     }
 }

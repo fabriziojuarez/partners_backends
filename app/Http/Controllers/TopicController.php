@@ -23,6 +23,8 @@ class TopicController extends Controller
 
         $topics = Topic::paginate(5);
 
+        $topics->load('course');
+
         $data = [
             'message' => 'Lista de Temas',
             'topics' => TopicResource::collection($topics),
@@ -45,7 +47,7 @@ class TopicController extends Controller
     public function store(StoreTopicRequest $request)
     {
         $course = Course::findOrFail($request->course_id);
-        $this->authorize('create', [Topic::class, $course]);
+        //$this->authorize('create', [Topic::class, $course]);
 
         $topic = DB::transaction(function () use ($request) {
             return Topic::create([
@@ -72,8 +74,8 @@ class TopicController extends Controller
         $this->authorize('update', [$topic, $course]);
 
         DB::transaction(function() use ($request, $topic) {
-            if($request->filled('title')){
-                $topic->update(['title' => $request->title,]);
+            if($request->filled('name')){
+                $topic->update(['name' => $request->name,]);
             }
             if($request->filled('description')){
                 $topic->update(['description' => $request->description,]);
@@ -83,6 +85,9 @@ class TopicController extends Controller
             }
             if($request->filled('note_max')){
                 $topic->update(['note_max' => $request->note_max,]);
+            }
+            if($request->filled('is_active')){
+                $topic->update(['is_active' => $request->is_active]);
             }
         });
 

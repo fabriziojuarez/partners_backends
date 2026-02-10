@@ -24,7 +24,7 @@ class EnrollmentController extends Controller
 
 
         $data = [
-            "message" => "Listando matriculas",
+            "message" => "Matriculas Listadas",
             "enrollments" => EnrollmentResource::collection($enrollments),
         ];
         return response()->json($data, 200);
@@ -45,7 +45,7 @@ class EnrollmentController extends Controller
 
         if($topics->isEmpty()){
             $data = [
-                'message' => "Curso no tiene temas configurados para evaluar",
+                'message' => "Matricula no procesada",
                 'topics'=> $topics,
             ];
             return response()->json($data, 434);
@@ -88,7 +88,8 @@ class EnrollmentController extends Controller
 
     }
 
-    public function delete(){
-
+    public function delete($id){
+        $enrollment = Enrollment::findOrFail($id);
+        
     }
 }
