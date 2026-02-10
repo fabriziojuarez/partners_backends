@@ -15,9 +15,12 @@ class PartnerResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'role' => new RoleResource($this->whenLoaded('role')),
             'user' => new UserResource($this->whenLoaded('user')),
+            'enrolled_courses' => EnrollmentResource::collection($this->whenLoaded('enrollments')),
+            'managed_courses' => CourseResource::collection($this->whenLoaded('managedCourses')),
         ];
     }
 }

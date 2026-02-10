@@ -15,9 +15,10 @@ class EnrollmentResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "curso" => new CourseResource($this->whenLoaded('course')),
-            "partner" => new PartnerResource($this->whenLoaded('partner')),
-            "period" => $this->period,
+            'id'=> $this->id,
+            'course' => new CourseResource($this->whenLoaded('course')),
+            'partner' => new PartnerResource($this->whenLoaded('partner')),
+            'period' => $this->period,
         ];
     }
 }

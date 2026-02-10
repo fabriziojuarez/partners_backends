@@ -15,10 +15,12 @@ class TopicResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
             'note_max' => $this->note_max,
             'is_active' => $this->is_active,
+            'course' => new CourseResource($this->whenLoaded('course')),
         ];
     }
 }
