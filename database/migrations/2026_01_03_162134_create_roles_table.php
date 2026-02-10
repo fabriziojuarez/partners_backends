@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('partner_roles', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->integer('hierarchy');
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('partner_roles');
     }
 };

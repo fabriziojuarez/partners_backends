@@ -13,13 +13,13 @@ class Partner extends Authenticatable
 
     protected $fillable = [
         'name',
-        'role_id',
+        'partner_role_id',
         'user_id',
     ];
 
     protected $hidden = [
         'id',
-        'role_id',
+        'partner_role_id',
         'user_id',
         'created_at',
         'updated_at',
@@ -32,9 +32,9 @@ class Partner extends Authenticatable
     }
 
     // Un Partner pertemece a un rol
-    public function role()
+    public function partner_role()
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(PartnerRole::class);
     }
 
     // Un Partner puede estar en varias matriculas

@@ -20,7 +20,7 @@ class CourseResource extends JsonResource
             'description' => $this->description,
             'is_active' => $this->is_active,
             'manager' => new PartnerResource($this->whenLoaded('manager')),
-            'topics' => TopicResource::collection($this->whenLoaded('topics')),
+            'topics' => CourseTopicResource::collection($this->whenLoaded('course_topics')),
         ];
     }
 }

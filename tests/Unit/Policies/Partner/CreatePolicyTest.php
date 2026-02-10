@@ -16,7 +16,7 @@ class CreatePolicyTest extends TestCase
         $BT_Partner = $this->makePartner('BT', 'Usuario Comun', true);
         $BT_User = $BT_Partner->user;
 
-        $FT_Rol = $this->makeRole('FT');
+        $FT_Rol = $this->makePartnerRole('FT');
 
         $policy = new PartnerPolicy();
         $this->assertTrue($policy->create($BT_User, $FT_Rol));
@@ -27,7 +27,7 @@ class CreatePolicyTest extends TestCase
         $BT_Partner = $this->makePartner('BT', 'Usuario Comun', true);
         $BT_User = $BT_Partner->user;
 
-        $BT_Rol = $this->makeRole('BT');
+        $BT_Rol = $this->makePartnerRole('BT');
 
         $policy = new PartnerPolicy();
         $this->assertFalse($policy->create($BT_User, $BT_Rol));
@@ -38,7 +38,7 @@ class CreatePolicyTest extends TestCase
         $BT_Partner = $this->makePartner('BT', 'Usuario Comun', true);
         $BT_User = $BT_Partner->user;
 
-        $SSV_Rol = $this->makeRole('SSV');
+        $SSV_Rol = $this->makePartnerRole('SSV');
 
         $policy = new PartnerPolicy();
         $this->assertFalse($policy->create($BT_User, $SSV_Rol));
@@ -49,7 +49,7 @@ class CreatePolicyTest extends TestCase
         $SSV_Partner = $this->makePartner('SSV', 'Usuario Comun', true);
         $SSV_User = $SSV_Partner->user;
 
-        $BT_Rol = $this->makeRole('BT');
+        $BT_Rol = $this->makePartnerRole('BT');
 
         $policy = new PartnerPolicy();
         $this->assertTrue($policy->create($SSV_User, $BT_Rol));
@@ -60,7 +60,7 @@ class CreatePolicyTest extends TestCase
         $SSV_Partner = $this->makePartner('SSV', 'Usuario Comun', true);
         $SSV_User = $SSV_Partner->user;
 
-        $SSV_Rol = $this->makeRole('SSV');
+        $SSV_Rol = $this->makePartnerRole('SSV');
 
         $policy = new PartnerPolicy();
         $this->assertFalse($policy->create($SSV_User, $SSV_Rol));
@@ -71,7 +71,7 @@ class CreatePolicyTest extends TestCase
         $SM_Partner = $this->makePartner('SM', 'Usuario Comun', true);
         $SM_User = $SM_Partner->user;
 
-        $SSV_Rol = $this->makeRole('SSV');
+        $SSV_Rol = $this->makePartnerRole('SSV');
 
         $policy = new PartnerPolicy();
         $this->assertTrue($policy->create($SM_User, $SSV_Rol));
@@ -82,7 +82,7 @@ class CreatePolicyTest extends TestCase
         $PT_Partner = $this->makePartner('PT', 'Administrador', true);
         $PT_User = $PT_Partner->user;
 
-        $SSV_Rol = $this->makeRole('SSV');
+        $SSV_Rol = $this->makePartnerRole('SSV');
 
         $policy = new PartnerPolicy();
         $this->assertTrue($policy->create($PT_User, $SSV_Rol));
@@ -93,7 +93,7 @@ class CreatePolicyTest extends TestCase
         $PT_Partner = $this->makePartner('PT', 'Usuario Comun', true);
         $PT_User = $PT_Partner->user;
 
-        $BT_Rol = $this->makeRole('BT');
+        $BT_Rol = $this->makePartnerRole('BT');
 
         $policy = new PartnerPolicy();
         $this->assertFalse($policy->create($PT_User, $BT_Rol));
@@ -104,7 +104,7 @@ class CreatePolicyTest extends TestCase
         $BT_Partner = $this->makePartner('BT', 'Administrador', false);
         $BT_User = $BT_Partner->user;
 
-        $PT_Rol = $this->makeRole('PT');
+        $PT_Rol = $this->makePartnerRole('PT');
 
         $policy = new PartnerPolicy();
         $this->assertFalse($policy->create($BT_User, $PT_Rol));

@@ -14,6 +14,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 use App\Models\User;
 use App\Models\Partner;
+use App\Models\PartnerRole;
 use App\Models\Role;
 
 class PartnerController extends Controller
@@ -23,7 +24,7 @@ class PartnerController extends Controller
     public function profile()
     {
         $id = Auth::user()->partner->id;
-        $partner = Partner::with(['role', 'user'])->findOrFail($id);
+        $partner = Partner::with(['partner_role', 'user'])->findOrFail($id);
 
         if($partner->role->isManager()){
             // Agregar progreso de cumplimiento en los cursos que gestiones
@@ -32,7 +33,7 @@ class PartnerController extends Controller
 
         $data = [
             'message' => 'Datos del Partner',
-            'mydata' => new PartnerResource($partner),
+            'data' => new PartnerResource($partner),
         ];
         return response()->json($data, 200);
     }
@@ -43,7 +44,7 @@ class PartnerController extends Controller
         // ROL, NOMBRE, ESTADO(ACTIVO E INNACTIVO)
         $this->authorize('view', Partner::class);
 
-        $partners = Partner::with(['role', 'user'])->paginate(5);
+        $partners = Partner::with(['partner_role', 'user'])->paginate(5);
 
         // Agregar el proceso de "cumplimiento" en general por cada partner
         $partners->load('enrollments');
@@ -60,7 +61,7 @@ class PartnerController extends Controller
     {
         // ABRIR DISCUSION SI ES NECESARIO EL SHOW, YA QUE EN INDEX SE ESTAN EXTRAYENDO
         // LOS DATOS NECESARIOS
-        $partner = Partner::with(['role', 'user'])->findOrFail($id);
+        $partner = Partner::with(['partner_role', 'user'])->findOrFail($id);
 
         $this->authorize('viewAny', $partner);
 
@@ -76,7 +77,7 @@ class PartnerController extends Controller
 
     public function store(StorePartnerRequest $request)
     {
-        $role = Role::findOrFail($request->role_id);
+        $role = PartnerRole::findOrFail($request->partner_role_id);
         $this->authorize('create', [Partner::class, $role]);
 
         $partner = DB::transaction(function () use ($request){
@@ -87,12 +88,12 @@ class PartnerController extends Controller
 
             return Partner::create([
                 'name' => $request->name,
-                'role_id' => $request->role_id,
+                'partner_role_id' => $request->partner_role_id,
                 'user_id' => $user->id,
             ]);
         });
 
-        $partner->load(['role', 'user']);
+        $partner->load(['partner_role', 'user']);
 
         $data = [
             'message' => 'Partner creado correctamente',
@@ -104,7 +105,7 @@ class PartnerController extends Controller
     public function update(int $id, UpdatePartnerRequest $request)
     {
         $partner = Partner::with(['user', 'role'])->findOrFail($id);
-        $role = Role::find($request->role_id) ?? $partner->role;
+        $role = PartnerRole::find($request->partner_role_id) ?? $partner->partner_role;
         $this->authorize('update', [$partner, $role]);
 
         DB::transaction(function() use ($request, $partner){
@@ -120,8 +121,8 @@ class PartnerController extends Controller
                 $partner->update(['name' => $request->name,]);
             }
 
-            if($request->filled('role_id')){
-                $partner->update(['role_id' => $request->role_id,]);
+            if($request->filled('partner_role_id')){
+                $partner->update(['partner_role_id' => $request->partner_role_id,]);
             }
 
             if($request->filled('is_active')){
@@ -129,7 +130,7 @@ class PartnerController extends Controller
             }
         });
 
-        $partner->load(['role', 'user']);
+        $partner->load(['partner_role', 'user']);
 
         $data = [
             'message' => 'Partner actualizado correctamente',

@@ -19,7 +19,7 @@ class AuthController extends Controller
     {
         $user = User::where('name', $request->user)
             ->where('is_active', true)
-            ->with('partner.role')
+            ->with(['partner.partner_role'])
             ->first();
 
         if (

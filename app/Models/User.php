@@ -32,7 +32,7 @@ class User extends Authenticatable
     protected $hidden = [
         'id',
         'password',
-        'systemrole_id',
+        'user_role_id',
         'created_at',
         'updated_at',
     ];
@@ -51,9 +51,9 @@ class User extends Authenticatable
     }
 
     // Un Usuario corresponde a un Rol de Sistema
-    public function systemRole()
+    public function user_role()
     {
-        return $this->belongsTo(SystemRole::class, 'systemrole_id');
+        return $this->belongsTo(UserRole::class, 'user_role_id');
     }
 
     // Un Usuario tiene solo un Partner
@@ -65,6 +65,6 @@ class User extends Authenticatable
     // Funcion para saber si es Administrador
     public function isAdmin(): bool
     {
-        return $this->systemRole->name === 'Administrador';
+        return $this->user_role->name === 'Administrador';
     }
 }

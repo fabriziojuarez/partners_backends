@@ -8,12 +8,9 @@ use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\Evaluation;
 use App\Models\Partner;
-use App\Models\Topic;
-use Illuminate\Http\Request;
+use App\Models\CourseTopic;
 
 use Illuminate\Support\Facades\DB;
-
-use function PHPUnit\Framework\isEmpty;
 
 class EnrollmentController extends Controller
 {
@@ -40,7 +37,7 @@ class EnrollmentController extends Controller
         $partner = Partner::findOrFail($request->partner_id);
 
         // Recopilar los temas del curso
-        $topics = Topic::where('course_id', $course->id)
+        $topics = CourseTopic::where('course_id', $course->id)
             ->where('is_active', true)->get();
 
         if($topics->isEmpty()){
@@ -69,7 +66,7 @@ class EnrollmentController extends Controller
             $topics->map(function($topic) use ($enrollment){
             Evaluation::create([
                     'enrollment_id' => $enrollment->id,
-                    'topic_id' => $topic->id,
+                    'course_topic_id' => $topic->id,
                 ]);
             });
         });

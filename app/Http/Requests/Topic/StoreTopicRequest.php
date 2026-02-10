@@ -25,7 +25,7 @@ class StoreTopicRequest extends FormRequest
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'course_id' => 'required|integer|exists:courses,id',
-            'note_max' => 'required|numeric|min:0',
+            'grade_max' => 'required|numeric|min:0',
         ];
     }
 }

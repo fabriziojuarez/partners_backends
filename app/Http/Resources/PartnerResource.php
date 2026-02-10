@@ -17,7 +17,7 @@ class PartnerResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'role' => new RoleResource($this->whenLoaded('role')),
+            'role' => new PartnerRoleResource($this->whenLoaded('partner_role')),
             'user' => new UserResource($this->whenLoaded('user')),
             'enrolled_courses' => EnrollmentResource::collection($this->whenLoaded('enrollments')),
             'managed_courses' => CourseResource::collection($this->whenLoaded('managedCourses')),

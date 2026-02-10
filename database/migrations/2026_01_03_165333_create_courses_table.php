@@ -16,6 +16,10 @@ return new class extends Migration
             $table->string('title')->unique();
             $table->text('description')->nullable();
             $table->boolean('is_active')->default(true);
+            $table->foreignId('manager_id')->nullable()
+                ->constrained('partners')
+                ->onUpdate('cascade')
+                ->onDelete('set null');
             $table->timestamps();
         });
     }

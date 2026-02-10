@@ -9,8 +9,7 @@ trait CreateCourses
 {
     protected function makeCourse(Partner $manager){
         $Course = new Course();
-        $Course->setRelation('manager', $manager);
-        
+        $Course->setRelation('manager', $manager);   
         return $Course;
     }
 }

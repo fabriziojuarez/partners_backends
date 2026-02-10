@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Topic extends Model
+class CourseTopic extends Model
 {
-    protected $table = 'topics';
+    protected $table = 'course_topics';
 
     protected $fillable = [
         'name',
         'is_active',
-        'note_max',
+        'grade_max',
         'course_id',
         'description',
     ];
@@ -25,7 +25,7 @@ class Topic extends Model
     protected function casts(): array
     {
         return [
-            'note_max' => 'float',
+            'grade_max' => 'float',
             'course_id' => 'integer',
             'is_active' => 'boolean',
         ];

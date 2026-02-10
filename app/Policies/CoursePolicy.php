@@ -11,7 +11,7 @@ class CoursePolicy
 {
     private function canManage(User $user): bool
     {
-        return $user->partner->role->isManager() || $user->isAdmin();
+        return $user->partner->partner_role->isManager() || $user->isAdmin();
     }
 
     /**
@@ -46,13 +46,13 @@ class CoursePolicy
      */
     public function update(User $user, Course $course, Partner $partner): bool
     {
-        if(!$user->is_active || !$partner->user->is_active || !$partner->role->isManager()){
+        if(!$user->is_active || !$partner->user->is_active || !$partner->partner_role->isManager()){
             return false;
         }
         if(
-            (($course->manager->role->hierarchy > $user->partner->role->hierarchy &&
+            (($course->manager->partner_role->hierarchy > $user->partner->partner_role->hierarchy &&
             $course->manager !== $user->partner) || ($user->partner !== $partner &&
-            $user->partner->role->hierarchy <= $partner->role->hierarchy)) && 
+            $user->partner->partner_role->hierarchy <= $partner->partner_role->hierarchy)) && 
             !$user->isAdmin()
         ){
             return false;

@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'fabri139',
             'password' => 10011,
-            'systemrole_id' => 2,
+            'user_role_id' => 2,
         ]);
 
         User::create([

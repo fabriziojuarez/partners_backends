@@ -27,7 +27,7 @@ class CourseController extends Controller
         // Posiblemente agregarle el sp para ver el progreso del "cumplimiento" cada curso
         $courses = Course::paginate(5);
 
-        $courses->load(['manager', 'topics']);
+        $courses->load(['manager', 'course_topics']);
         //cargar la relacion de matriculados(enrollment->partner)
 
         $data = [
@@ -44,7 +44,7 @@ class CourseController extends Controller
 
         $this->authorize('viewAny', $course);
 
-        $course->load(['manager', 'topics']);
+        $course->load(['manager', 'course_topics']);
 
         $data = [
             'message' => 'Detalle del Curso',

@@ -25,8 +25,8 @@ class UpdateTopicRequest extends FormRequest
             'name' => 'sometimes|string|max:255',
             'description' => 'sometimes|string',
             'course_id' => 'sometimes|integer|exists:courses,id',
-            'note_max' => 'sometimes|numeric|min:0',
-            'is_active' => ''
+            'grade_max' => 'sometimes|numeric|min:0',
+            'is_active' => 'sometimes|boolean',
         ];
     }
 }

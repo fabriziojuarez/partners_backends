@@ -25,7 +25,7 @@ class StorePartnerRequest extends FormRequest
             'user' => 'required|string|max:255|unique:users,name',
             'name' => 'required|string|max:255',
             'code' => 'required|integer|digits_between:5,7',
-            'role_id' => 'required|integer|exists:roles,id',
+            'partner_role_id' => 'required|integer|exists:roles,id',
         ];
     }
 }

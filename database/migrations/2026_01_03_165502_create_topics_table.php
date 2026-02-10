@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('topics', function (Blueprint $table) {
+        Schema::create('course_topics', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->double('note_max');
+            $table->text('description')->default('');
+            $table->double('grade_max');
             $table->boolean('is_active')->default(true);
             $table->foreignId('course_id')
                 ->constrained('courses')
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('topics');
+        Schema::dropIfExists('course_topics');
     }
 };

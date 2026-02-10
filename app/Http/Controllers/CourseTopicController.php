@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Topic\StoreTopicRequest;
+use App\Http\Resources\CourseTopicResource;
 use App\Http\Resources\TopicResource;
 use Illuminate\Http\Request;
 
@@ -10,36 +11,36 @@ use Illuminate\Support\Facades\DB;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-use App\Models\Topic;
 use App\Models\Course;
+use App\Models\CourseTopic;
 
-class TopicController extends Controller
+class CourseTopicController extends Controller
 {
     use AuthorizesRequests;
 
     public function index()
     {
-        $this->authorize('viewAny', Topic::class);
+        $this->authorize('viewAny', CourseTopic::class);
 
-        $topics = Topic::paginate(5);
+        $topics = CourseTopic::paginate(5);
 
         $topics->load('course');
 
         $data = [
             'message' => 'Lista de Temas',
-            'topics' => TopicResource::collection($topics),
+            'topics' => CourseTopicResource::collection($topics),
         ];
         return response()->json($data, 200);
     }
 
     public function show($id)
     {
-        $topic = Topic::findOrFail($id);
+        $topic = CourseTopic::findOrFail($id);
         $this->authorize('view', $topic);
 
         $data = [
             'message' => 'Detalle del Tema',
-            'topic' => new TopicResource($topic),
+            'topic' => new CourseTopicResource($topic),
         ];
         return response()->json($data, 200);
     }
@@ -50,11 +51,11 @@ class TopicController extends Controller
         //$this->authorize('create', [Topic::class, $course]);
 
         $topic = DB::transaction(function () use ($request) {
-            return Topic::create([
+            return CourseTopic::create([
                 'name' => $request->name,
                 'description' => $request->description,
                 'course_id' => $request->course_id,
-                'note_max' => $request->note_max,
+                'grade_max' => $request->grade_max,
             ]);
         });
 
@@ -62,14 +63,14 @@ class TopicController extends Controller
 
         $data = [
             'message' => 'Tema Creado',
-            'topic' => new TopicResource($topic),
+            'topic' => new CourseTopicResource($topic),
         ];
         return response()->json($data, 201);
     }
 
     public function update(Request $request, $id)
     {
-        $topic = Topic::findOrFail($id);
+        $topic = CourseTopic::findOrFail($id);
         $course = Course::find($topic->course_id) ?? $topic->course;
         $this->authorize('update', [$topic, $course]);
 
@@ -83,8 +84,8 @@ class TopicController extends Controller
             if($request->filled('course_id')){
                 $topic->update(['course_id' => $request->course_id,]);
             }
-            if($request->filled('note_max')){
-                $topic->update(['note_max' => $request->note_max,]);
+            if($request->filled('grade_max')){
+                $topic->update(['grade_max' => $request->grade_max,]);
             }
             if($request->filled('is_active')){
                 $topic->update(['is_active' => $request->is_active]);
@@ -95,14 +96,14 @@ class TopicController extends Controller
 
         $data = [
             'message' => 'Tema Actualizado',
-            'topic' => new TopicResource($topic),
+            'topic' => new CourseTopicResource($topic),
         ];
         return response()->json($data, 200);
     }
 
     public function destroy($id)
     {
-        $topic = Topic::findOrFail($id);
+        $topic = CourseTopic::findOrFail($id);
         $this->authorize('delete', $topic);
 
         DB::transaction(function () use ($topic) {

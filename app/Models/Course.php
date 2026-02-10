@@ -29,9 +29,9 @@ class Course extends Model
     }
 
     // Un curso puede tener varios temas
-    public function topics()
+    public function course_topics()
     {
-        return $this->hasMany(Topic::class);
+        return $this->hasMany(CourseTopic::class);
     }
 
     // Un curso puede estar en varias matriculas

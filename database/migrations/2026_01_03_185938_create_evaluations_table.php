@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('evaluations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('enrollment_id');
-            $table->foreignId('topic_id')
-                ->constrained()
+            $table->foreignId('course_topic_id')
+                ->constrained('course_topics')
                 ->onDelete('cascade');
-            $table->double('note')->default(0.0);
+            $table->double('grade')->default(0.0);
+            $table->text('observations')->default('');
             $table->timestamps();
         });
     }

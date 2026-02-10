@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\CourseTopicController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\TopicController;
 use App\Models\Topic;
@@ -33,7 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('/{id}', 'update');
         Route::delete('/{id}', 'destroy');
     });
-    Route::prefix('topics')->controller(TopicController::class)->group(function(){
+    Route::prefix('topics')->controller(CourseTopicController::class)->group(function(){
         Route::get('', 'index');
         Route::post('', 'store');
         Route::get('/{id}', 'show');

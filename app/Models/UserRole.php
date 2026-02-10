@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SystemRole extends Model
+class UserRole extends Model
 {
-    protected $table = 'systemroles';
+    protected $table = 'user_roles';
 
     protected $fillable = [
         'name',
@@ -16,6 +16,6 @@ class SystemRole extends Model
     // Un Rol de Sistema puede tener muchos Usuarios
     public function users()
     {
-        return $this->hasMany(User::class, 'systemrole_id');
+        return $this->hasMany(User::class, 'user_role_id');
     }
 }

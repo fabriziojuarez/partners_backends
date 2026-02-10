@@ -3,12 +3,12 @@
 namespace App\Policies;
 
 use App\Models\Partner;
-use App\Models\Role;
+use App\Models\PartnerRole;
 use App\Models\User;
 
 class PartnerPolicy
 {
-    private function canManage(User $user, Role $role): bool
+    private function canManage(User $user, PartnerRole $role): bool
     {
         // Toda accion de un usuario o administrador inactivo dara error
         if(!$user->is_active){
@@ -19,7 +19,7 @@ class PartnerPolicy
             return true;
         }
         // Dependera si el usuario que realiza la accion tiene una mayor jerarquia
-        return $user->partner->role->hierarchy > $role->hierarchy;
+        return $user->partner->partner_role->hierarchy > $role->hierarchy;
     }
 
     /**
@@ -30,7 +30,7 @@ class PartnerPolicy
         if(!$user->is_active){
             return false;
         }
-        return $user->partner->role->isManager() || $user->isAdmin();
+        return $user->partner->partner_role->isManager() || $user->isAdmin();
     }
 
     /**
@@ -41,16 +41,16 @@ class PartnerPolicy
         if(!$user->is_active){
             return false;
         }
-        return $user->partner->role->isManager() || $user->isAdmin();
+        return $user->partner->partner_role->isManager() || $user->isAdmin();
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user, Role $role): bool
+    public function create(User $user, PartnerRole $role): bool
     {
         // Todo usuario que no sea gestor de partners ni administrador, dara error
-        if(!$user->partner->role->isManager() && !$user->isAdmin()){
+        if(!$user->partner->partner_role->isManager() && !$user->isAdmin()){
             return false;
         }
         return $this->canManage($user, $role);
@@ -60,15 +60,15 @@ class PartnerPolicy
      * Determine whether the user can update the model.
      */
     // User: Quien realiza la accion | Partner: Usuario seleccionado | Role: a definir
-    public function update(User $user, Partner $partner, Role $role): bool
+    public function update(User $user, Partner $partner, PartnerRole $role): bool
     {
         // Todo usuario que no sea gestor de partners ni administrador, dara error
-        if(!$user->partner->role->isManager() && !$user->isAdmin()){
+        if(!$user->partner->partner_role->isManager() && !$user->isAdmin()){
             return false;
         }
 
         // Si el partner seleccionado es de mayor jerarquia o es administrador, dara error
-        if(!$this->canManage($user, $partner->role) || $partner->user->isAdmin()){
+        if(!$this->canManage($user, $partner->partner_role) || $partner->user->isAdmin()){
             return false;
         }
         // Si ninguno de los casos se cumple, el partner puede modificarlo con un rol inferior a el
@@ -84,7 +84,7 @@ class PartnerPolicy
         if($partner->user->isAdmin()){
             return false;
         }
-        return $this->canManage($user, $partner->role);
+        return $this->canManage($user, $partner->partner_role);
     }
 
     /**

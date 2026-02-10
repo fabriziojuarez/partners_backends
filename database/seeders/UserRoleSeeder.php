@@ -2,24 +2,23 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-use App\Models\SystemRole;
+use App\Models\UserRole;
 
-class SystemRoleSeeder extends Seeder
+class UserRoleSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        SystemRole::create([
+        UserRole::create([
             'name' => 'Usuario',
             'description' => 'Usuario comun',
         ]);
 
-        SystemRole::create([
+        UserRole::create([
             'name' => 'Administrador',
             'description' => 'Administracion completa de partners y cursos',
         ]);

@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('password');
-            $table->foreignId('systemrole_id')->default(1)
-                ->constrained('systemroles')
+            $table->foreignId('user_role_id')->default(1)
+                ->constrained('user_roles')
                 ->onDelete('cascade');
             $table->boolean('is_active')->default(true);
             $table->timestamps();

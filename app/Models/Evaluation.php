@@ -10,8 +10,8 @@ class Evaluation extends Model
 
     protected $fillable = [
         'enrollment_id',
-        'topic_id',
-        'nota'
+        'course_topic_id',
+        'grade',
     ];
 
     // Una Evaluacion corresponde a una Inscripcion
@@ -21,8 +21,8 @@ class Evaluation extends Model
     }
 
     // Una Evaluacion corresponde a un Tema
-    public function topic()
+    public function course_topic()
     {
-        return $this->belongsTo(Topic::class);
+        return $this->belongsTo(CourseTopic::class);
     }
 }
