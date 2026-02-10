@@ -12,6 +12,7 @@ class Evaluation extends Model
         'enrollment_id',
         'course_topic_id',
         'grade',
+        'observations',
     ];
 
     // Una Evaluacion corresponde a una Inscripcion

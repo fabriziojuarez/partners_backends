@@ -45,6 +45,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('enrollments')->controller(EnrollmentController::class)->group(function(){
         Route::get('', 'index');
         Route::post('', 'store');
+        Route::get('/{id}', 'show');
+        Route::patch('/{id}', 'update');
+        Route::delete('/{id}', 'destroy');
     });
 
     Route::post('/logout', [AuthController::class, 'logout']);
