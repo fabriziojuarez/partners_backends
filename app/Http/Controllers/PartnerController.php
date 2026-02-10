@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Partner\StorePartnerRequest;
 use App\Http\Requests\Partner\UpdatePartnerRequest;
 use App\Http\Resources\PartnerResource;
-use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -26,8 +25,13 @@ class PartnerController extends Controller
         $id = Auth::user()->partner->id;
         $partner = Partner::with(['role', 'user'])->findOrFail($id);
 
+        if($partner->role->isManager()){
+            // Agregar progreso de cumplimiento en los cursos que gestiones
+        }
+        // Agregar el progreso en cada curso que estes matriculado con algun sp
+
         $data = [
-            'message' => 'Bienvenido',
+            'message' => 'Datos del Partner',
             'mydata' => new PartnerResource($partner),
         ];
         return response()->json($data, 200);
@@ -35,10 +39,15 @@ class PartnerController extends Controller
 
     public function index()
     {
+        // agregar filtros:
+        // ROL, NOMBRE, ESTADO(ACTIVO E INNACTIVO)
         $this->authorize('view', Partner::class);
 
-        // Extraer con algun sp tambien sus progresos y cursos matriculados
         $partners = Partner::with(['role', 'user'])->paginate(5);
+
+        // Agregar el proceso de "cumplimiento" en general por cada partner
+        $partners->load('enrollments');
+        $partners->load(['managedCourses']);
 
         $data = [
             'message' => 'Lista de Partners',
@@ -49,10 +58,14 @@ class PartnerController extends Controller
     
     public function show(int $id)
     {
-        // Extraer con algun sp el progreso de este partner y sus cursos matriculados
+        // ABRIR DISCUSION SI ES NECESARIO EL SHOW, YA QUE EN INDEX SE ESTAN EXTRAYENDO
+        // LOS DATOS NECESARIOS
         $partner = Partner::with(['role', 'user'])->findOrFail($id);
 
         $this->authorize('viewAny', $partner);
+
+        $partner->load('enrollments');
+        $partner->load(['managedCourses']);
 
         $data = [
             'message' => 'Detalle del Partner',

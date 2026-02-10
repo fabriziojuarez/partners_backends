@@ -24,10 +24,11 @@ class CourseController extends Controller
     {
         $this->authorize('view', Course::class);
 
-        // Posiblemente agregarle el sp para ver el progreso de cada curso
+        // Posiblemente agregarle el sp para ver el progreso del "cumplimiento" cada curso
         $courses = Course::paginate(5);
 
         $courses->load(['manager', 'topics']);
+        //cargar la relacion de matriculados(enrollment->partner)
 
         $data = [
             'message' => 'Lista de Cursos',
